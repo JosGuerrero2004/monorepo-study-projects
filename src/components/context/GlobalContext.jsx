@@ -8,38 +8,51 @@ const initialState = {
   fotoSeleccionada: null,
   tag: 0,
   filtro: '',
-  modalAbierto: false
+  modalAbierto: false,
 }
 
 const reducer = (state, action) => {
-    switch (action.type) {
+  switch (action.type) {
     case 'SET_TAG':
       return { ...state, tag: action.payload }
     case 'SET_FOTOS':
       return { ...state, fotosGaleria: action.payload }
     case 'SET_FOTO_SELECCIONADA':
-      return { ...state,
+      return {
+        ...state,
         fotoSeleccionada: action.payload,
-        modalAbierto: action.payload != null ? true : false
+        modalAbierto: action.payload != null ? true : false,
       }
     case 'SET_TODAS_LAS_FOTOS':
       return { ...state, todaslasFotos: action.payload }
     case 'SET_FILTRO':
       return { ...state, filtro: action.payload }
-    case 'ALTERNAR_FAVORITO':
-      const fotosDeGaleria = state.fotosGaleria.map(fotoGaleria => {
+    case 'ALTERNAR_FAVORITO': {
+      const fotosDeGaleria = state.fotosGaleria.map((fotoGaleria) => {
         return {
           ...fotoGaleria,
-          favorito: fotoGaleria.id === action.payload.id ? !fotoGaleria.favorito : fotoGaleria.favorito
+          favorito:
+            fotoGaleria.id === action.payload.id
+              ? !fotoGaleria.favorito
+              : fotoGaleria.favorito,
         }
       })
       if (action.payload.id === state.fotoSeleccionada?.id) {
-        return { ...state, fotosGaleria: fotosDeGaleria, fotoSeleccionada: { ...state.fotoSeleccionada, favorito: !state.fotoSeleccionada.favorito } }
+        return {
+          ...state,
+          fotosGaleria: fotosDeGaleria,
+          fotoSeleccionada: {
+            ...state.fotoSeleccionada,
+            favorito: !state.fotoSeleccionada.favorito,
+          },
+        }
       } else {
         return {
-          ...state, fotosGaleria: fotosDeGaleria
+          ...state,
+          fotosGaleria: fotosDeGaleria,
         }
       }
+    }
 
     default:
       return state
@@ -61,10 +74,15 @@ const GlobalContextProvider = ({ children }) => {
 
   useEffect(() => {
     const { todaslasFotos, tag, filtro } = state
-    const fotosFiltradas = todaslasFotos.filter(foto => {
+    const fotosFiltradas = todaslasFotos.filter((foto) => {
       const filtroPorTag = !tag || foto.tagId === tag
-      const filtroPorTitulo = !filtro || foto.titulo.toLocaleLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '')
-        .includes(filtro.toLowerCase())
+      const filtroPorTitulo =
+        !filtro ||
+        foto.titulo
+          .toLocaleLowerCase()
+          .normalize('NFD')
+          .replace(/\p{Diacritic}/gu, '')
+          .includes(filtro.toLowerCase())
       return filtroPorTag && filtroPorTitulo
     })
     dispatch({ type: 'SET_FOTOS', payload: fotosFiltradas })

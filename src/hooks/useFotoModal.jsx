@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { GlobalContext } from '../components/context/GlobalContext'
 
-function useFotoModal () {
+function useFotoModal() {
   const { state, dispatch } = useContext(GlobalContext)
   const abrirModal = (foto) => {
     dispatch({ type: 'SET_FOTO_SELECCIONADA', payload: foto })

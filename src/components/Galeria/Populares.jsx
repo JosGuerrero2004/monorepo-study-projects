@@ -16,7 +16,7 @@ const Boton = styled.button`
   background-color: transparent;
   color: #fff;
   border: 2px solid;
-  border-color: #C98CF1;
+  border-color: #c98cf1;
   padding: 12px 20px;
   font-size: 20px;
   border-radius: 10px;
@@ -36,7 +36,9 @@ const Populares = ({ fotos }) => {
     <StyledSection>
       <Titulo $align='center'>Populares</Titulo>
       <ColumnaFotos>
-        {fotos.map(foto => <Img key={foto.id} src={foto.path} alt={foto.titulo} />)}
+        {fotos.map((foto) => (
+          <Img key={foto.id} src={foto.path} alt={foto.titulo} />
+        ))}
       </ColumnaFotos>
       <Boton>Ver más</Boton>
     </StyledSection>

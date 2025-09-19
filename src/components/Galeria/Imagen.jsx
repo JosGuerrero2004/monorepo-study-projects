@@ -12,7 +12,7 @@ const Figure = styled.figure`
   flex-direction: column;
   align-self: center;
   align-self: center;
-flex-shrink: 0;
+  flex-shrink: 0;
 
   & > img {
     max-width: 100%;
@@ -27,24 +27,24 @@ flex-shrink: 0;
     box-sizing: border-box;
     padding: 12px;
     h3 {
-        font-family: 'GandhiSansBold';
+      font-family: 'GandhiSansBold';
     }
     h4 {
-        flex-grow: 1;
+      flex-grow: 1;
     }
     h3,
     h4 {
-        margin: 0;
-        font-size: 16px;
-    }   
+      margin: 0;
+      font-size: 16px;
+    }
   }
 `
 
 const Pie = styled.footer`
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 12px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
 `
 
 const Imagen = ({ imagen, expandida = false }) => {
@@ -58,16 +58,30 @@ const Imagen = ({ imagen, expandida = false }) => {
         <h3>{imagen.titulo}</h3>
         <Pie>
           <h4>{imagen.fuente}</h4>
-          <BotonIcono onClick={() => dispatch({ type: 'ALTERNAR_FAVORITO', payload: imagen })} aria-pressed={imagen.favorito}>
-            <img src={imagen.favorito ? '/iconos/favorito-activo.png' : '/iconos/favorito.png'} alt='Iconono de favorito' />
+          <BotonIcono
+            onClick={() =>
+              dispatch({ type: 'ALTERNAR_FAVORITO', payload: imagen })
+            }
+            aria-pressed={imagen.favorito}
+          >
+            <img
+              src={
+                imagen.favorito
+                  ? '/iconos/favorito-activo.png'
+                  : '/iconos/favorito.png'
+              }
+              alt='Iconono de favorito'
+            />
           </BotonIcono>
-          {!expandida &&
-            <BotonIcono aria-hidden={expandida} onClick={() => abrirModal(imagen)}>
+          {!expandida && (
+            <BotonIcono
+              aria-hidden={expandida}
+              onClick={() => abrirModal(imagen)}
+            >
               <img src='/iconos/expandir.png' alt='Iconono de expandir' />
-            </BotonIcono>}
-
+            </BotonIcono>
+          )}
         </Pie>
-
       </figcaption>
     </Figure>
   )

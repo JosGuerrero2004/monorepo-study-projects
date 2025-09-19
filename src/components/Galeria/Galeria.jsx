@@ -6,6 +6,7 @@ import Imagen from './Imagen'
 import { useContext } from 'react'
 import { GlobalContext } from '../context/GlobalContext'
 import Cargando from '../Cargando/Cargando'
+import ImagenesContainer from '../Containers/ImagenesContainer'
 
 const GaleriaContainer = styled.div`
   display: flex;
@@ -15,33 +16,21 @@ const SeccionFluida = styled.section`
   flex-grow: 1;
 `
 
-const ImagenesContainer = styled.section`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 24px;
-`
-
 const Galeria = () => {
   const { state } = useContext(GlobalContext)
-  return (
-    state.fotosGaleria.length === 0
-    ? <Cargando /> :
+  return state.fotosGaleria.length === 0 ? (
+    <Cargando />
+  ) : (
     <>
       <Tag />
       <GaleriaContainer>
         <SeccionFluida>
-          <Titulo>
-            Navegue por la galería
-          </Titulo>
+          <Titulo>Navegue por la galería</Titulo>
           <ImagenesContainer>
-            {state.fotosGaleria.map(foto =>
-              <Imagen
-                key={foto.id}
-                imagen={foto}
-              />
-            )}
+            {state.fotosGaleria.map((foto) => (
+              <Imagen key={foto.id} imagen={foto} />
+            ))}
           </ImagenesContainer>
-
         </SeccionFluida>
 
         <Populares fotos={state.fotosGaleria} />

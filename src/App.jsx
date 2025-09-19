@@ -2,14 +2,23 @@ import styled from 'styled-components'
 import GlobalStyles from './components/GlobalStyles'
 import Cabecera from './components/Cabecera'
 import BarraLateral from './components/BarraLateral'
-import Banner from './components/Banner/Banner'
-import banner from './assets/banner.png'
-import Galeria from './components/Galeria/Galeria'
 import ModalZoom from './components/Galeria/ModalZooom/ModalZoom'
 import GlobalContextProvider from './components/context/GlobalContext'
+import Home from './views/Home'
+import { Route, Routes } from 'react-router'
+import MasVistas from './views/MasVistas'
+import Favoritos from './views/Favoritos'
+import Nuevas from './views/Nuevas'
+import Sorprendeme from './views/Sorprendeme'
+import GaleriaLayout from './components/GaleriaLayout'
 
 const FondoGradiente = styled.div`
-  background: linear-gradient(174.61deg, #041833 4.16%, #04244F 48%, #154580 96.76%);
+  background: linear-gradient(
+    174.61deg,
+    #041833 4.16%,
+    #04244f 48%,
+    #154580 96.76%
+  );
   width: 100%;
   min-height: 100vh;
 `
@@ -25,14 +34,7 @@ const MainContainer = styled.main`
   gap: 32px;
 `
 
-const ContenedorGaleria = styled.section`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  gap: 24px;
-`
-
-function App () {
+function App() {
   return (
     <>
       <FondoGradiente>
@@ -42,10 +44,15 @@ function App () {
             <Cabecera />
             <MainContainer>
               <BarraLateral />
-              <ContenedorGaleria>
-                <Banner texto='La galería mas fachera del mundo' backgroundImage={banner} />
-                <Galeria />
-              </ContenedorGaleria>
+              <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/galeria' element={<GaleriaLayout />}>
+                  <Route path='mas-vistas' element={<MasVistas />} />
+                  <Route path='favoritos' element={<Favoritos />} />
+                  <Route path='nuevas' element={<Nuevas />} />
+                  <Route path='sorprendeme' element={<Sorprendeme />} />
+                </Route>
+              </Routes>
             </MainContainer>
           </AppContainer>
           <ModalZoom />

@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import Imagen from '../Imagen'
 import BotonIcono from '../BotonIcono'
-import { useContext } from 'react'
-import { GlobalContext } from '../../context/GlobalContext'
 import useFotoModal from '../../../hooks/useFotoModal'
 const Overlay = styled.div`
   position: fixed;
@@ -17,7 +15,7 @@ const Overlay = styled.div`
 `
 
 const StyledDialog = styled.dialog`
-  display:flex;
+  display: flex;
   top: 50%;
   left: 50%;
   transform: translate(-45%, -50%);
@@ -33,7 +31,7 @@ const StyledDialog = styled.dialog`
 
   form {
     button {
-      position:relative;
+      position: relative;
       top: 20px;
       right: 60px;
     }
@@ -41,27 +39,26 @@ const StyledDialog = styled.dialog`
 `
 
 const ModalZoom = () => {
-  const { isOpenModal, fotoSeleccionada, cerrarModal} = useFotoModal()
+  const { isOpenModal, fotoSeleccionada, cerrarModal } = useFotoModal()
   return (
     <>
-      {
-        isOpenModal &&
-          <>
-            <Overlay>
-              <StyledDialog open={!!fotoSeleccionada} onClose={() => cerrarModal()}>
-                <Imagen expandida imagen={fotoSeleccionada} />
-                <form method='dialog'>
-                  <BotonIcono formMethod='dialog'>
-                    <img src='/iconos/cerrar.png' alt='icono de cerrar' />
-                  </BotonIcono>
-
-                </form>
-
-              </StyledDialog>
-            </Overlay>
-
-          </>
-      }
+      {isOpenModal && (
+        <>
+          <Overlay>
+            <StyledDialog
+              open={!!fotoSeleccionada}
+              onClose={() => cerrarModal()}
+            >
+              <Imagen expandida imagen={fotoSeleccionada} />
+              <form method='dialog'>
+                <BotonIcono formMethod='dialog'>
+                  <img src='/iconos/cerrar.png' alt='icono de cerrar' />
+                </BotonIcono>
+              </form>
+            </StyledDialog>
+          </Overlay>
+        </>
+      )}
     </>
   )
 }

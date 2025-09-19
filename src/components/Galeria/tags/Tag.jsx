@@ -5,7 +5,7 @@ import { GlobalContext } from '../../context/GlobalContext'
 
 const TagButton = styled.button`
   font-size: 24px;
-  color: #FFFFFF;
+  color: #ffffff;
   background: rgba(217, 217, 217, 0.3);
   border-radius: 10px;
   cursor: pointer;
@@ -14,8 +14,8 @@ const TagButton = styled.button`
   box-sizing: border-box;
   border: 2px solid transparent;
   &:hover {
-    border-color: #C98CF1;
-    }
+    border-color: #c98cf1;
+  }
 `
 
 const TagsContainer = styled.article`
@@ -27,7 +27,7 @@ const TagsContainer = styled.article`
 `
 
 const TagTitulo = styled.h3`
-  color: #D9D9D9;
+  color: #d9d9d9;
   font-size: 24px;
   margin: 0;
 `
@@ -38,13 +38,17 @@ const Tag = () => {
     <>
       <TagsContainer>
         <TagTitulo>Buscar por tags:</TagTitulo>
-        {
-          tags.map(tag => {
-            return <TagButton key={tag.id} onClick={() => dispatch({ type: 'SET_TAG', payload: tag.tag })}>{tag.titulo}</TagButton>
-          })
-        }
+        {tags.map((tag) => {
+          return (
+            <TagButton
+              key={tag.id}
+              onClick={() => dispatch({ type: 'SET_TAG', payload: tag.tag })}
+            >
+              {tag.titulo}
+            </TagButton>
+          )
+        })}
       </TagsContainer>
-
     </>
   )
 }
