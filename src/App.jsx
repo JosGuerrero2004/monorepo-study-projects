@@ -3,7 +3,6 @@ import GlobalStyles from './components/GlobalStyles'
 import Cabecera from './components/Cabecera'
 import BarraLateral from './components/BarraLateral'
 import ModalZoom from './components/Galeria/ModalZooom/ModalZoom'
-import GlobalContextProvider from './components/context/GlobalContext'
 import Home from './views/Home'
 import { Route, Routes } from 'react-router'
 import MasVistas from './views/MasVistas'
@@ -12,6 +11,8 @@ import Nuevas from './views/Nuevas'
 import Sorprendeme from './views/Sorprendeme'
 import GaleriaLayout from './components/GaleriaLayout'
 import DetalleImagen from './views/DetalleImagen'
+import Login from './views/Login'
+import RouteProtector from './components/RouteProtector'
 
 const FondoGradiente = styled.div`
   background: linear-gradient(
@@ -39,14 +40,15 @@ function App() {
   return (
     <>
       <FondoGradiente>
-        <GlobalContextProvider>
-          <GlobalStyles />
-          <AppContainer>
-            <Cabecera />
-            <MainContainer>
-              <BarraLateral />
-              <Routes>
-                <Route path='/' element={<Home />} />
+        <GlobalStyles />
+        <AppContainer>
+          <Cabecera />
+          <MainContainer>
+            <BarraLateral />
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/login' element={<Login />} />
+              <Route element={<RouteProtector />}>
                 <Route path='/galeria' element={<GaleriaLayout />}>
                   <Route path='mas-vistas' element={<MasVistas />} />
                   <Route path='favoritos' element={<Favoritos />} />
@@ -54,11 +56,11 @@ function App() {
                   <Route path='sorprendeme' element={<Sorprendeme />} />
                 </Route>
                 <Route path='/foto/:id' element={<DetalleImagen />} />{' '}
-              </Routes>{' '}
-            </MainContainer>
-          </AppContainer>
-          <ModalZoom />
-        </GlobalContextProvider>
+              </Route>
+            </Routes>
+          </MainContainer>
+        </AppContainer>
+        <ModalZoom />
       </FondoGradiente>
     </>
   )

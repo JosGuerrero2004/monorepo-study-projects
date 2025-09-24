@@ -9,12 +9,15 @@ const initialState = {
   tag: 0,
   filtro: '',
   modalAbierto: false,
+  auth: false,
 }
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_TAG':
       return { ...state, tag: action.payload }
+    case 'SET_AUTH':
+      return { ...state, auth: action.payload }
     case 'SET_FOTOS':
       return { ...state, fotosGaleria: action.payload }
     case 'SET_FOTO_SELECCIONADA':
