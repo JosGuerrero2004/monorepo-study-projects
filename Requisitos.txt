@@ -1,0 +1,8 @@
+* Cada transacción realizada en el sistema debe tener ÚNICAMENTE la siguiente información:
+  1) Fecha de la transacción
+  2) Tipo de transacción (depósito, transferencia, pago con boleto)
+  3) Monto de la transacción (monto mayor que cero)
+
+* Siempre que la transacción sea del tipo DEPÓSITO, el monto de la transacción debe agregarse al saldo de la cuenta.
+* Siempre que la transacción sea del tipo TRANSFERENCIA o PAGO DE FACTURA, el monto de la transacción deberá restar del saldo de la cuenta.
+* El saldo debe estar siempre actualizado en la pantalla de la aplicación para cada transacción realizada.
