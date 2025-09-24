@@ -11,6 +11,7 @@ import Favoritos from './views/Favoritos'
 import Nuevas from './views/Nuevas'
 import Sorprendeme from './views/Sorprendeme'
 import GaleriaLayout from './components/GaleriaLayout'
+import DetalleImagen from './views/DetalleImagen'
 
 const FondoGradiente = styled.div`
   background: linear-gradient(
@@ -52,7 +53,8 @@ function App() {
                   <Route path='nuevas' element={<Nuevas />} />
                   <Route path='sorprendeme' element={<Sorprendeme />} />
                 </Route>
-              </Routes>
+                <Route path='/foto/:id' element={<DetalleImagen />} />{' '}
+              </Routes>{' '}
             </MainContainer>
           </AppContainer>
           <ModalZoom />

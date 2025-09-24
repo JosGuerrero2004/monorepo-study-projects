@@ -3,6 +3,7 @@ import BotonIcono from './BotonIcono'
 import { useContext } from 'react'
 import { GlobalContext } from '../context/GlobalContext'
 import useFotoModal from '../../hooks/useFotoModal'
+import { useNavigate } from 'react-router'
 
 const Figure = styled.figure`
   width: ${(props) => (props.$expandida ? '90%' : '460px')};
@@ -48,12 +49,17 @@ const Pie = styled.footer`
 `
 
 const Imagen = ({ imagen, expandida = false }) => {
+  const navigate = useNavigate()
   const { abrirModal } = useFotoModal()
   const { dispatch } = useContext(GlobalContext)
 
   return (
     <Figure $expandida={expandida} id={`foto-${imagen.id}`}>
-      <img src={imagen.path} alt={imagen.titulo} />
+      <img
+        src={imagen.path}
+        alt={imagen.titulo}
+        onClick={() => navigate(`/foto/${imagen.id}`)}
+      />
       <figcaption>
         <h3>{imagen.titulo}</h3>
         <Pie>
