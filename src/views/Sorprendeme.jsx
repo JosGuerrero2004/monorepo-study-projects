@@ -8,6 +8,7 @@ import ContenidoSeccion from '../components/Containers/ContenidoSeccion'
 import Titulo from '../components/Galeria/Titulo'
 import ImagenesContainer from '../components/Containers/ImagenesContainer'
 import RandomizeId from '../utils/RandomizeId'
+import AnimationPage from '../components/AnimationPage'
 
 const FlexibleContainer = styled.div`
   display: ${({ display }) => display || 'block'};
@@ -18,20 +19,22 @@ const Sorprendeme = () => {
   const randomId = RandomizeId(1, state.fotosGaleria.length)
   console.log(randomId)
   return (
-    <ContenidoSeccion>
-      <Banner texto='¡Sorprendeme!' backgroundImage={banner} />
+    <AnimationPage>
+      <ContenidoSeccion>
+        <Banner texto='¡Sorprendeme!' backgroundImage={banner} />
 
-      <FlexibleContainer>
-        <Titulo>Las que te sorprenderán</Titulo>
-        <ImagenesContainer>
-          {state.fotosGaleria
-            .filter((foto) => Number(foto.id) === randomId)
-            .map((foto) => (
-              <Imagen key={foto.id} imagen={foto} />
-            ))}
-        </ImagenesContainer>
-      </FlexibleContainer>
-    </ContenidoSeccion>
+        <FlexibleContainer>
+          <Titulo>Las que te sorprenderán</Titulo>
+          <ImagenesContainer>
+            {state.fotosGaleria
+              .filter((foto) => Number(foto.id) === randomId)
+              .map((foto) => (
+                <Imagen key={foto.id} imagen={foto} />
+              ))}
+          </ImagenesContainer>
+        </FlexibleContainer>
+      </ContenidoSeccion>
+    </AnimationPage>
   )
 }
 

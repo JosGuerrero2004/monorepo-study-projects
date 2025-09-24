@@ -4,7 +4,7 @@ import Cabecera from './components/Cabecera'
 import BarraLateral from './components/BarraLateral'
 import ModalZoom from './components/Galeria/ModalZooom/ModalZoom'
 import Home from './views/Home'
-import { Route, Routes } from 'react-router'
+import { Route, Routes, useLocation } from 'react-router'
 import MasVistas from './views/MasVistas'
 import Favoritos from './views/Favoritos'
 import Nuevas from './views/Nuevas'
@@ -13,6 +13,7 @@ import GaleriaLayout from './components/GaleriaLayout'
 import DetalleImagen from './views/DetalleImagen'
 import Login from './views/Login'
 import RouteProtector from './components/RouteProtector'
+import NotFound from './views/NotFound'
 
 const FondoGradiente = styled.div`
   background: linear-gradient(
@@ -37,6 +38,7 @@ const MainContainer = styled.main`
 `
 
 function App() {
+  const location = useLocation()
   return (
     <>
       <FondoGradiente>
@@ -45,7 +47,7 @@ function App() {
           <Cabecera />
           <MainContainer>
             <BarraLateral />
-            <Routes>
+            <Routes location={location} key={location.pathname}>
               <Route path='/' element={<Home />} />
               <Route path='/login' element={<Login />} />
               <Route element={<RouteProtector />}>
@@ -57,6 +59,7 @@ function App() {
                 </Route>
                 <Route path='/foto/:id' element={<DetalleImagen />} />{' '}
               </Route>
+              <Route path='*' element={<NotFound />} />
             </Routes>
           </MainContainer>
         </AppContainer>

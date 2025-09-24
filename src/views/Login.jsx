@@ -2,6 +2,7 @@ import { useContext, useRef } from 'react'
 import styled from 'styled-components'
 import { GlobalContext } from '../components/context/GlobalContext'
 import { useNavigate } from 'react-router'
+import AnimationPage from '../components/AnimationPage'
 
 const LoginContainer = styled.div`
   display: flex;
@@ -65,22 +66,24 @@ const Login = () => {
     }
   }
   return (
-    <LoginContainer>
-      <h2>Inicio de sesión</h2>
-      <LoginForm onSubmit={handleSubmit}>
-        <Input
-          type='email'
-          placeholder='correo electrónico'
-          ref={referenciaEmail}
-        />
-        <Input
-          type='password'
-          placeholder='Contraseña'
-          ref={referenciaPassword}
-        />
-        <Button type='submit'>Ingresar</Button>
-      </LoginForm>
-    </LoginContainer>
+    <AnimationPage>
+      <LoginContainer>
+        <h2>Inicio de sesión</h2>
+        <LoginForm onSubmit={handleSubmit}>
+          <Input
+            type='email'
+            placeholder='correo electrónico'
+            ref={referenciaEmail}
+          />
+          <Input
+            type='password'
+            placeholder='Contraseña'
+            ref={referenciaPassword}
+          />
+          <Button type='submit'>Ingresar</Button>
+        </LoginForm>
+      </LoginContainer>
+    </AnimationPage>
   )
 }
 

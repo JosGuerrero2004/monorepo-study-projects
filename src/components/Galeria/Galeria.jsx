@@ -7,6 +7,7 @@ import { useContext } from 'react'
 import { GlobalContext } from '../context/GlobalContext'
 import Cargando from '../Cargando/Cargando'
 import ImagenesContainer from '../Containers/ImagenesContainer'
+import AnimationPage from '../AnimationPage'
 
 const GaleriaContainer = styled.div`
   display: flex;
@@ -22,19 +23,21 @@ const Galeria = () => {
     <Cargando />
   ) : (
     <>
-      <Tag />
-      <GaleriaContainer>
-        <SeccionFluida>
-          <Titulo>Navegue por la galería</Titulo>
-          <ImagenesContainer>
-            {state.fotosGaleria.map((foto) => (
-              <Imagen key={foto.id} imagen={foto} />
-            ))}
-          </ImagenesContainer>
-        </SeccionFluida>
+      <AnimationPage>
+        <Tag />
+        <GaleriaContainer>
+          <SeccionFluida>
+            <Titulo>Navegue por la galería</Titulo>
+            <ImagenesContainer>
+              {state.fotosGaleria.map((foto) => (
+                <Imagen key={foto.id} imagen={foto} />
+              ))}
+            </ImagenesContainer>
+          </SeccionFluida>
 
-        <Populares fotos={state.fotosGaleria} />
-      </GaleriaContainer>
+          <Populares fotos={state.fotosGaleria} />
+        </GaleriaContainer>
+      </AnimationPage>
     </>
   )
 }

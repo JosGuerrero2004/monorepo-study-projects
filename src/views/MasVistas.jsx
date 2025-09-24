@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import ContenidoSeccion from '../components/Containers/ContenidoSeccion'
 import Titulo from '../components/Galeria/Titulo'
 import ImagenesContainer from '../components/Containers/ImagenesContainer'
+import AnimationPage from '../components/AnimationPage'
 
 const FlexibleContainer = styled.div`
   display: ${({ display }) => display || 'block'};
@@ -15,20 +16,22 @@ const FlexibleContainer = styled.div`
 const MasVistas = () => {
   const { state } = useContext(GlobalContext)
   return (
-    <ContenidoSeccion>
-      <Banner texto='Imágenes más vistas' backgroundImage={banner} />
+    <AnimationPage>
+      <ContenidoSeccion>
+        <Banner texto='Imágenes más vistas' backgroundImage={banner} />
 
-      <FlexibleContainer>
-        <Titulo>Imagenes mas vistas</Titulo>
-        <ImagenesContainer>
-          {state.fotosGaleria
-            .filter((foto) => foto.vistas >= 500)
-            .map((foto) => (
-              <Imagen key={foto.id} imagen={foto} />
-            ))}
-        </ImagenesContainer>
-      </FlexibleContainer>
-    </ContenidoSeccion>
+        <FlexibleContainer>
+          <Titulo>Imagenes mas vistas</Titulo>
+          <ImagenesContainer>
+            {state.fotosGaleria
+              .filter((foto) => foto.vistas >= 500)
+              .map((foto) => (
+                <Imagen key={foto.id} imagen={foto} />
+              ))}
+          </ImagenesContainer>
+        </FlexibleContainer>
+      </ContenidoSeccion>
+    </AnimationPage>
   )
 }
 
