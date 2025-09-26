@@ -1,4 +1,4 @@
-.extracto {
+.statement {
   background-color: #f5f5f5;
   padding: 30px;
   border-radius: 8px;
@@ -11,27 +11,27 @@
     margin-block: 0 32px;
   }
 
-  & .transacciones-group {
+  & .transactions-group {
     margin-bottom: 16px;
 
-    .mes-group {
-      color: var(--color-secundario);
+    .month-group {
+      color: var(--secondary-color);
       font-weight: 600;
       font-size: var(--font-t3);
     }
 
-    .transaccion-item {
+    .transaction-item {
       display: flex;
       justify-content: flex-start;
       align-items: flex-start;
 
-      .transaccion-info {
+      .transaction-info {
         width: 180px;
-        border-bottom: 1px solid var(--color-secundario);
+        border-bottom: 1px solid var(--secondary-color);
         padding-bottom: 16px;
         margin-bottom: 16px;
 
-        .tipo {
+        .type {
           display: block;
         }
 
@@ -40,11 +40,11 @@
         }
       }
 
-      .fecha {
-        color: var(--color-terciario);
+      .date {
+        color: var(--tertiary-color);
       }
 
-      &:last-of-type .transaccion-info {
+      &:last-of-type .transaction-info {
         border-bottom: none;
         margin-bottom: 0;
       }
@@ -57,4 +57,3 @@
     margin-top: 24px;
   }
 }
-

@@ -1,24 +1,23 @@
-import { FormatoFecha } from '../types/FormatoFecha.js'
+import { FormatDate } from '../types/FormatDate.js'
 
-export function formatearMoneda(valor: number): string {
-  return valor.toLocaleString('en-US', { currency: 'USD', style: 'currency' })
+export function formatCurrency(valor: number): string {
+  return valor.toLocaleString('es-ES', { style: 'currency', currency: 'USD' })
 }
 
-export function formatearFecha(fecha: Date, formato: FormatoFecha = FormatoFecha.PATRON): string {
-  if (formato === FormatoFecha.DIA_SEMANA_DIA_MES_ANIO) {
-    return fecha.toLocaleDateString('es-ES', {
+export function formatDate(date: Date, format: FormatDate = FormatDate.DEFAULT): string {
+  if (format === FormatDate.WEEKDAY_DAY_MONTH_YEAR) {
+    return date.toLocaleDateString('es-ES', {
       weekday: 'long',
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
     })
-  }
-  if (formato === FormatoFecha.DIA_MES) {
-    return fecha.toLocaleDateString('es-ES', {
+  } else if (format === FormatDate.DAY_MONTH) {
+    return date.toLocaleDateString('es-ES', {
       day: '2-digit',
       month: '2-digit',
     })
   }
 
-  return fecha.toLocaleDateString('es-ES')
+  return date.toLocaleDateString('es-ES')
 }
