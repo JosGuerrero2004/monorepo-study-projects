@@ -1,8 +1,8 @@
-import { Transaction } from '../types/Transaction'
-import { TransactionType } from '../types/TransactionType'
-import BalanceComponent from './balance-component'
-import Account from '../types/Account'
-import StatementComponent from './statement-component'
+import { Transaction } from '../types/Transaction.js'
+import { TransactionType } from '../types/TransactionType.js'
+import BalanceComponent from './balance-component.js'
+import Account from '../types/Account.js'
+import StatementComponent from './statement-component.js'
 
 const elementForm = document.querySelector('.block-new-transaction form') as HTMLFormElement
 elementForm.addEventListener('submit', function (event) {

@@ -1,7 +1,7 @@
-import Account from '../types/Account'
-import { FormatDate } from '../types/FormatDate'
-import { GroupTransaction } from '../types/GroupTransaction'
-import { formatCurrency, formatDate } from '../utils/formatters'
+import Account from '../types/Account.js'
+import { FormatDate } from '../types/FormatDate.js'
+import { GroupTransaction } from '../types/GroupTransaction.js'
+import { formatCurrency, formatDate } from '../utils/formatters.js'
 
 const transactionRecordElement: HTMLElement = document.querySelector(
   '.statement .register-transactions'

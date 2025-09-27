@@ -1,38 +1,48 @@
-import { TransactionType } from './TransactionType';
-let balance = JSON.parse(localStorage.getItem('balance')) || 0;
-const transactions = JSON.parse(localStorage.getItem('transactions'), (key, value) => {
-    if (key === 'date') {
-        return new Date(value);
+import { TransactionType } from './TransactionType.js';
+import { Storage } from './Storage.js';
+export class Account {
+    // atributos - datos
+    name;
+    balance = Storage.read('balance') || 0;
+    transactions = Storage.read('transaccions', (key, value) => {
+        if (key === 'date') {
+            return new Date(value);
+        }
+        return value;
+    }) || [];
+    constructor(name) {
+        this.name = name;
     }
-    return value;
-}) || [];
-function debit(value) {
-    if (value <= 0) {
-        throw new Error('El valor a ser debitado debe ser mayor que cero!');
+    // metodos - funciones
+    getName() {
+        return this.name;
     }
-    if (value > balance) {
-        throw new Error('Saldo insuficiente!');
-    }
-    balance -= value;
-    localStorage.setItem('balance', balance.toString());
-}
-function deposit(value) {
-    if (value <= 0) {
-        throw new Error('El valor a ser depositado debe ser mayor que cero!');
-    }
-    balance += value;
-    localStorage.setItem('balance', balance.toString());
-}
-const Account = {
     getBalance() {
-        return balance;
-    },
+        return this.balance;
+    }
     getAccessDate() {
         return new Date();
-    },
+    }
+    debit(value) {
+        if (value <= 0) {
+            throw new Error('El valor a ser debitado debe ser mayor que cero!');
+        }
+        if (value > this.balance) {
+            throw new Error('Saldo insuficiente!');
+        }
+        this.balance -= value;
+        Storage.save('balance', this.balance.toString());
+    }
+    deposit(value) {
+        if (value <= 0) {
+            throw new Error('El valor a ser depositado debe ser mayor que cero!');
+        }
+        this.balance += value;
+        Storage.save('balance', this.balance.toString());
+    }
     getTransactionGroups() {
         const transactionGroups = [];
-        const transactionList = structuredClone(transactions);
+        const transactionList = structuredClone(this.transactions);
         const sortedTransactions = transactionList.sort((t1, t2) => t2.date.getTime() - t1.date.getTime());
         let currentGroupLabel = '';
         for (let transaction of sortedTransactions) {
@@ -50,22 +60,22 @@ const Account = {
             transactionGroups.at(-1).transactions.push(transaction);
         }
         return transactionGroups;
-    },
+    }
     registerTransaction(newTransaction) {
         if (newTransaction.transactionType == TransactionType.DEPOSIT) {
-            deposit(newTransaction.value);
+            this.deposit(newTransaction.value);
         }
         else if (newTransaction.transactionType == TransactionType.TRANSFER ||
             newTransaction.transactionType == TransactionType.BILL_PAYMENT) {
-            debit(newTransaction.value);
+            this.debit(newTransaction.value);
             newTransaction.value *= -1;
         }
         else {
             throw new Error('Tipo de Transacción es inválido!');
         }
-        transactions.push(newTransaction);
+        this.transactions.push(newTransaction);
         console.log(this.getTransactionGroups());
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-    },
-};
-export default Account;
+        Storage.save('transactions', JSON.stringify(this.transactions));
+    }
+}
+export default new Account('Juana Ferreira');

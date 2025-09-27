@@ -1,50 +1,62 @@
-import { Transaction } from './Transaction'
-import { TransactionType } from './TransactionType'
-import { GroupTransaction } from './GroupTransaction'
+import { Transaction } from './Transaction.js'
+import { GroupTransaction } from './GroupTransaction.js'
+import { TransactionType } from './TransactionType.js'
+import { Storage } from './Storage.js'
 
-let balance: number = JSON.parse(localStorage.getItem('balance')) || 0
-const transactions: Transaction[] =
-  JSON.parse(localStorage.getItem('transactions'), (key: string, value: string) => {
-    if (key === 'date') {
-      return new Date(value)
-    }
+export class Account {
+  // atributos - datos
+  protected name: string
+  protected balance: number = Storage.read('balance') || 0
+  private transactions: Transaction[] =
+    Storage.read('transaccions', (key: string, value: string) => {
+      if (key === 'date') {
+        return new Date(value)
+      }
 
-    return value
-  }) || []
+      return value
+    }) || []
 
-function debit(value: number): void {
-  if (value <= 0) {
-    throw new Error('El valor a ser debitado debe ser mayor que cero!')
-  }
-  if (value > balance) {
-    throw new Error('Saldo insuficiente!')
-  }
-
-  balance -= value
-  localStorage.setItem('balance', balance.toString())
-}
-
-function deposit(value: number): void {
-  if (value <= 0) {
-    throw new Error('El valor a ser depositado debe ser mayor que cero!')
+  constructor(name: string) {
+    this.name = name
   }
 
-  balance += value
-  localStorage.setItem('balance', balance.toString())
-}
+  // metodos - funciones
+  getName() {
+    return this.name
+  }
 
-const Account = {
   getBalance() {
-    return balance
-  },
+    return this.balance
+  }
 
   getAccessDate(): Date {
     return new Date()
-  },
+  }
+
+  private debit(value: number): void {
+    if (value <= 0) {
+      throw new Error('El valor a ser debitado debe ser mayor que cero!')
+    }
+    if (value > this.balance) {
+      throw new Error('Saldo insuficiente!')
+    }
+
+    this.balance -= value
+    Storage.save('balance', this.balance.toString())
+  }
+
+  protected deposit(value: number): void {
+    if (value <= 0) {
+      throw new Error('El valor a ser depositado debe ser mayor que cero!')
+    }
+
+    this.balance += value
+    Storage.save('balance', this.balance.toString())
+  }
 
   getTransactionGroups(): GroupTransaction[] {
     const transactionGroups: GroupTransaction[] = []
-    const transactionList: Transaction[] = structuredClone(transactions)
+    const transactionList: Transaction[] = structuredClone(this.transactions)
     const sortedTransactions: Transaction[] = transactionList.sort(
       (t1, t2) => t2.date.getTime() - t1.date.getTime()
     )
@@ -66,25 +78,25 @@ const Account = {
     }
 
     return transactionGroups
-  },
+  }
 
   registerTransaction(newTransaction: Transaction): void {
     if (newTransaction.transactionType == TransactionType.DEPOSIT) {
-      deposit(newTransaction.value)
+      this.deposit(newTransaction.value)
     } else if (
       newTransaction.transactionType == TransactionType.TRANSFER ||
       newTransaction.transactionType == TransactionType.BILL_PAYMENT
     ) {
-      debit(newTransaction.value)
+      this.debit(newTransaction.value)
       newTransaction.value *= -1
     } else {
       throw new Error('Tipo de Transacción es inválido!')
     }
 
-    transactions.push(newTransaction)
+    this.transactions.push(newTransaction)
     console.log(this.getTransactionGroups())
-    localStorage.setItem('transactions', JSON.stringify(transactions))
-  },
+    Storage.save('transactions', JSON.stringify(this.transactions))
+  }
 }
 
-export default Account
+export default new Account('Juana Ferreira')
