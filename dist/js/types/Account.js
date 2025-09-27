@@ -1,5 +1,12 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { TransactionType } from './TransactionType.js';
 import { Storage } from './Storage.js';
+import { ValidateDebit, ValidateDeposit } from './Decorators.js';
 export class Account {
     // atributos - datos
     name;
@@ -24,21 +31,12 @@ export class Account {
         return new Date();
     }
     debit(value) {
-        if (value <= 0) {
-            throw new Error('El valor a ser debitado debe ser mayor que cero!');
-        }
-        if (value > this.balance) {
-            throw new Error('Saldo insuficiente!');
-        }
         this.balance -= value;
-        Storage.save('balance', this.balance.toString());
+        Storage.save('balance', this.balance);
     }
     deposit(value) {
-        if (value <= 0) {
-            throw new Error('El valor a ser depositado debe ser mayor que cero!');
-        }
         this.balance += value;
-        Storage.save('balance', this.balance.toString());
+        Storage.save('balance', this.balance);
     }
     getTransactionGroups() {
         const transactionGroups = [];
@@ -75,7 +73,13 @@ export class Account {
         }
         this.transactions.push(newTransaction);
         console.log(this.getTransactionGroups());
-        Storage.save('transactions', JSON.stringify(this.transactions));
+        Storage.save('transactions', this.transactions);
     }
 }
+__decorate([
+    ValidateDebit
+], Account.prototype, "debit", null);
+__decorate([
+    ValidateDeposit
+], Account.prototype, "deposit", null);
 export default new Account('Juana Ferreira');

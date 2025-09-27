@@ -2,13 +2,14 @@ import { Transaction } from './Transaction.js'
 import { GroupTransaction } from './GroupTransaction.js'
 import { TransactionType } from './TransactionType.js'
 import { Storage } from './Storage.js'
+import { ValidateDebit, ValidateDeposit } from './Decorators.js'
 
 export class Account {
   // atributos - datos
   protected name: string
-  protected balance: number = Storage.read('balance') || 0
+  protected balance: number = Storage.read<number>('balance') || 0
   private transactions: Transaction[] =
-    Storage.read('transaccions', (key: string, value: string) => {
+    Storage.read<Transaction[]>('transaccions', (key: string, value: string) => {
       if (key === 'date') {
         return new Date(value)
       }
@@ -33,25 +34,16 @@ export class Account {
     return new Date()
   }
 
+  @ValidateDebit
   private debit(value: number): void {
-    if (value <= 0) {
-      throw new Error('El valor a ser debitado debe ser mayor que cero!')
-    }
-    if (value > this.balance) {
-      throw new Error('Saldo insuficiente!')
-    }
-
     this.balance -= value
-    Storage.save('balance', this.balance.toString())
+    Storage.save('balance', this.balance)
   }
 
+  @ValidateDeposit
   protected deposit(value: number): void {
-    if (value <= 0) {
-      throw new Error('El valor a ser depositado debe ser mayor que cero!')
-    }
-
     this.balance += value
-    Storage.save('balance', this.balance.toString())
+    Storage.save('balance', this.balance)
   }
 
   getTransactionGroups(): GroupTransaction[] {
@@ -95,7 +87,7 @@ export class Account {
 
     this.transactions.push(newTransaction)
     console.log(this.getTransactionGroups())
-    Storage.save('transactions', JSON.stringify(this.transactions))
+    Storage.save('transactions', this.transactions)
   }
 }
 
