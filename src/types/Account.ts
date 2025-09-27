@@ -9,7 +9,7 @@ export class Account {
   protected name: string
   protected balance: number = Storage.read<number>('balance') || 0
   private transactions: Transaction[] =
-    Storage.read<Transaction[]>('transaccions', (key: string, value: string) => {
+    Storage.read<Transaction[]>('transactions', (key: string, value: string) => {
       if (key === 'date') {
         return new Date(value)
       }

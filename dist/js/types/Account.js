@@ -11,7 +11,7 @@ export class Account {
     // atributos - datos
     name;
     balance = Storage.read('balance') || 0;
-    transactions = Storage.read('transaccions', (key, value) => {
+    transactions = Storage.read('transactions', (key, value) => {
         if (key === 'date') {
             return new Date(value);
         }
