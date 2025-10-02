@@ -1,36 +1,49 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './ListaTareas.css'
 import ITarea from '../../interfaces/ITarea'
 import Tarea from '../Tarea/Tarea'
 import Formulario from '../Formulario/Formulario'
+import { saveToLocalStorage } from '../../utils/LocalStorage'
+import { toast } from 'react-toastify'
+import { fetchDataAPI } from '../../services/ApiService'
+interface IProps {
+  filtro: string
+  finalizadas: boolean
+}
 
-const ListaTareas = () => {
-  const [filtro] = useState<string>('')
-  const [finalizadas] = useState<boolean>(false)
+const ListaTareas = ({ filtro, finalizadas }: IProps) => {
+  const ApiURL = 'http://localhost:3000/tareas'
+  const creacionComponente = useRef<boolean>(true)
+  const [tareas, setTareas] = useState<ITarea[]>([])
+  const cargarTareasAPI = async () => {
+    const res = await fetchDataAPI<ITarea[]>(ApiURL)
 
-  const [tareas, setTareas] = useState<ITarea[]>([
-    {
-      id: 1,
-      nombre: 'Aprender React + Typescript',
-      descripcion: 'Realizar la formación Alura para aprender React + Typescript',
-      estado: 'Ejecución',
-      fecha: new Date('2024-12-31'),
-    },
-    {
-      id: 2,
-      nombre: 'Practicar typescript',
-      descripcion: 'Practicar el lenguaje',
-      estado: 'Finalizado',
-      fecha: new Date('2024-09-30'),
-    },
-    {
-      id: 3,
-      nombre: 'Hacer caminata',
-      descripcion: 'Mantener la salud',
-      estado: 'Planificado',
-      fecha: new Date('2024-12-31'),
-    },
-  ])
+    if (res.error) {
+      toast(res.error)
+    } else {
+      setTareas(
+        res.data
+          ? res.data.map((tarea: ITarea) => {
+              return {
+                ...tarea,
+                fecha: new Date(tarea.fecha),
+              }
+            })
+          : []
+      )
+    }
+  }
+
+  useEffect(() => {
+    if (creacionComponente.current) {
+      creacionComponente.current = false
+      cargarTareasAPI()
+      return
+    }
+
+    saveToLocalStorage({ key: 'tareas', value: tareas })
+    toast('Tareas actualizadas')
+  }, [tareas])
 
   const tareasFiltradas: ITarea[] = tareas.filter((tarea: ITarea) => {
     return (
@@ -39,18 +52,37 @@ const ListaTareas = () => {
     )
   })
 
-  const agregarTarea = (tarea: ITarea) => {
-    setTareas([...tareas, tarea])
+  const agregarTarea = async (tarea: ITarea) => {
+    const res = await fetchDataAPI<ITarea>(ApiURL, 'POST', tarea)
+    if (res.error) {
+      toast(res.error)
+    } else {
+      setTareas([...tareas, tarea])
+    }
   }
 
-  const onFinalizar = (id: number) => {
-    setTareas((prev) =>
-      prev.map((tarea) => (tarea.id === id ? { ...tarea, estado: 'Finalizado' } : tarea))
-    )
+  const onFinalizar = async (id: string) => {
+    const endPoint = `${ApiURL}/${id}`
+    const res = await fetchDataAPI<ITarea>(endPoint, 'PATCH', { estado: 'Finalizado' })
+
+    if (res.error) {
+      toast(res.error)
+    } else {
+      setTareas((prev) =>
+        prev.map((tarea) => (tarea.id === id ? { ...tarea, estado: 'Finalizado' } : tarea))
+      )
+    }
   }
 
-  const onEliminar = (id: number) => {
-    setTareas((prev) => prev.filter((tarea) => tarea.id !== id))
+  const onEliminar = async (id: string) => {
+    const endPoint = `${ApiURL}/${id}`
+    const res = await fetchDataAPI<ITarea>(endPoint, 'DELETE')
+
+    if (res.error) {
+      toast(res.error)
+    } else {
+      setTareas((prev) => prev.filter((tarea) => tarea.id !== id))
+    }
   }
 
   return (

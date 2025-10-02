@@ -47,7 +47,7 @@ const Formulario: FC<IFormularioProps> = ({ onSubmit }) => {
   const handleSubmit = (data: Omit<ITarea, 'id'>) => {
     const nuevaTarea: ITarea = {
       ...data,
-      id: Date.now(),
+      id: Date.now().toString(),
       fecha: new Date(`${data.fecha} 00:00:00`),
     }
 

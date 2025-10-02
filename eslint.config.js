@@ -10,25 +10,20 @@ export default tseslint.config(
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-    },
-    plugins: {
-      react,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-    },
+    languageOptions: { ecmaVersion: 2020, globals: globals.browser },
+    plugins: { react, 'react-hooks': reactHooks, 'react-refresh': reactRefresh },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react/self-closing-comp': [
+      'react/self-closing-comp': ['error', { component: true, html: true }],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      '@typescript-eslint/no-unused-expressions': [
         'error',
         {
-          component: true,
-          html: true,
+          allowShortCircuit: true,
+          allowTernary: true,
+          allowTaggedTemplates: false,
         },
       ],
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   }
 )

@@ -1,19 +1,23 @@
-import { FC, ReactNode } from 'react'
+import { useState } from 'react'
 import './Home.css'
 import Navbar from '../componentes/Navbar/Navbar'
+import ListaTareas from '../componentes/ListaTareas/ListaTareas'
 
 interface IHomeProps {
-  children: ReactNode
   titulo?: string
 }
 
-const Home: FC<IHomeProps> = ({ children, titulo = 'AluraTask' }) => {
+const Home = ({ titulo = 'AluraTask' }: IHomeProps) => {
+  const [filtro, setFiltro] = useState<string>('')
+  const [finalizadas, setFinalizadas] = useState<boolean>(false)
   return (
     <>
-      <Navbar titulo={titulo} />
+      <Navbar setFiltro={setFiltro} setFinalizadas={setFinalizadas} titulo={titulo} />
       <section className='main'>
         <div className='container'>
-          <div id='task-list'>{children}</div>
+          <div id='task-list'>
+            <ListaTareas filtro={filtro} finalizadas={finalizadas} />
+          </div>
         </div>
       </section>
     </>
