@@ -1,0 +1,21 @@
+* Cada transacción realizada en el sistema debe contener ÚNICAMENTE la siguiente información:
+  1) Fecha de la Transacción (Date)
+  2) Tipo de Transacción (Depósito, Transferencia, Pago de Factura)
+  3) Monto de la Transacción (monto mayor a cero)
+
+* Siempre que la transacción sea del tipo DEPÓSITO, el monto de la transacción debe sumarse al saldo de la cuenta.
+* Siempre que la transacción sea del tipo TRANSFERENCIA o PAGO DE FACTURA, el monto de la transacción debe restarse del saldo de la cuenta.
+* El saldo debe actualizarse en la pantalla de la aplicación con cada transacción realizada.
+
+---------------------------------------------
+
+* La información de la cuenta debe estar en un módulo específico llamado "Cuenta"
+- Saldo
+- Fecha de Acceso
+- Registro de Transacciones realizadas
+- Historial de transacciones
+
+* Los componentes
+  - Nueva transacción: debe simplemente recopilar la información del formulario de la interfaz y pasar los datos al módulo Cuenta.
+  - Saldo: debe mostrar la información de la fecha de acceso y el saldo al usuario en la interfaz, accediendo a estos datos a través 
+  del módulo Cuenta.
