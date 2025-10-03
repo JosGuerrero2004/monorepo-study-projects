@@ -1,10 +1,10 @@
 import ITarea from './ITarea'
 
 export interface ITareaContext {
-  filtro: string
-  setFiltro: (valor: string) => void
-  finalizadas: boolean
-  setFinalizadas: (valor: boolean) => void
+  ApiURL: string
   tareas: ITarea[]
-  setTareas: (valor: ITarea[]) => void
+  setTareas: (updateFn: (prevValue?: ITarea[]) => ITarea[]) => void
+  agregarTarea: (tarea: ITarea) => Promise<void>
+  onFinalizar: (id: string) => Promise<void>
+  onEliminar: (id: string) => Promise<void>
 }

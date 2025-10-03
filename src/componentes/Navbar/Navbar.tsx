@@ -1,17 +1,17 @@
 import { FC, useRef } from 'react'
+import { useFiltrosContext } from '../../context/Filtros/useFiltrosContext'
 
 interface IProps {
   titulo: string
-  setFiltro: (value: string) => void
-  setFinalizadas: (updateFn: (prevValue: boolean) => boolean) => void
 }
 
-const Navbar: FC<IProps> = ({ setFiltro, setFinalizadas, titulo }) => {
+const Navbar: FC<IProps> = ({ titulo }) => {
   const searchWrapperRef = useRef<HTMLDivElement>(null)
   const searchButtonRef = useRef<HTMLButtonElement>(null)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
+  const { setFinalizadas, setFiltro } = useFiltrosContext()
   function toggleSearch(): void {
     if (searchWrapperRef.current && closeButtonRef.current && searchButtonRef.current) {
       searchWrapperRef.current.classList.add('active')

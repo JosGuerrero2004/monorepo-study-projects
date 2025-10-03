@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import './ListaTareas.css'
 import ITarea from '../../interfaces/ITarea'
 import Tarea from '../Tarea/Tarea'
@@ -6,33 +6,30 @@ import Formulario from '../Formulario/Formulario'
 import { saveToLocalStorage } from '../../utils/LocalStorage'
 import { toast } from 'react-toastify'
 import { fetchDataAPI } from '../../services/ApiService'
-interface IProps {
-  filtro: string
-  finalizadas: boolean
-}
+import { useTareasContext } from '../../context/Tarea/useTareasContext'
+import { useFiltrosContext } from '../../context/Filtros/useFiltrosContext'
 
-const ListaTareas = ({ filtro, finalizadas }: IProps) => {
-  const ApiURL = 'http://localhost:3000/tareas'
+const ListaTareas = () => {
   const creacionComponente = useRef<boolean>(true)
-  const [tareas, setTareas] = useState<ITarea[]>([])
-  const cargarTareasAPI = async () => {
+  const { ApiURL, tareas, setTareas } = useTareasContext()
+  const { filtro, finalizadas } = useFiltrosContext()
+
+  const cargarTareasAPI = useCallback(async () => {
     const res = await fetchDataAPI<ITarea[]>(ApiURL)
 
     if (res.error) {
       toast(res.error)
     } else {
-      setTareas(
-        res.data
-          ? res.data.map((tarea: ITarea) => {
-              return {
-                ...tarea,
-                fecha: new Date(tarea.fecha),
-              }
-            })
-          : []
-      )
+      setTareas(() => {
+        return res.data!.map((tarea: ITarea) => {
+          return {
+            ...tarea,
+            fecha: new Date(tarea.fecha),
+          }
+        })
+      })
     }
-  }
+  }, [ApiURL, setTareas])
 
   useEffect(() => {
     if (creacionComponente.current) {
@@ -43,7 +40,7 @@ const ListaTareas = ({ filtro, finalizadas }: IProps) => {
 
     saveToLocalStorage({ key: 'tareas', value: tareas })
     toast('Tareas actualizadas')
-  }, [tareas])
+  }, [tareas, cargarTareasAPI])
 
   const tareasFiltradas: ITarea[] = tareas.filter((tarea: ITarea) => {
     return (
@@ -52,44 +49,11 @@ const ListaTareas = ({ filtro, finalizadas }: IProps) => {
     )
   })
 
-  const agregarTarea = async (tarea: ITarea) => {
-    const res = await fetchDataAPI<ITarea>(ApiURL, 'POST', tarea)
-    if (res.error) {
-      toast(res.error)
-    } else {
-      setTareas([...tareas, tarea])
-    }
-  }
-
-  const onFinalizar = async (id: string) => {
-    const endPoint = `${ApiURL}/${id}`
-    const res = await fetchDataAPI<ITarea>(endPoint, 'PATCH', { estado: 'Finalizado' })
-
-    if (res.error) {
-      toast(res.error)
-    } else {
-      setTareas((prev) =>
-        prev.map((tarea) => (tarea.id === id ? { ...tarea, estado: 'Finalizado' } : tarea))
-      )
-    }
-  }
-
-  const onEliminar = async (id: string) => {
-    const endPoint = `${ApiURL}/${id}`
-    const res = await fetchDataAPI<ITarea>(endPoint, 'DELETE')
-
-    if (res.error) {
-      toast(res.error)
-    } else {
-      setTareas((prev) => prev.filter((tarea) => tarea.id !== id))
-    }
-  }
-
   return (
     <>
       <div className='formWrapper'>
         <h2>Creación de Tareas</h2>
-        <Formulario onSubmit={agregarTarea} />
+        <Formulario />
       </div>
 
       <hr />
@@ -97,13 +61,7 @@ const ListaTareas = ({ filtro, finalizadas }: IProps) => {
         <h2>Lista de Tareas</h2>
         <ul id='tasks'>
           {tareasFiltradas.map((tarea: ITarea, index: number) => (
-            <Tarea
-              tarea={tarea}
-              key={tarea.id}
-              index={index}
-              onFinalizar={onFinalizar}
-              onEliminar={onEliminar}
-            />
+            <Tarea tarea={tarea} key={tarea.id} index={index} />
           ))}
         </ul>
       </div>

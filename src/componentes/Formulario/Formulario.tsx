@@ -1,13 +1,10 @@
-import { FC } from 'react'
 import ITarea from '../../interfaces/ITarea'
 import { FormularioGenerico } from '../FormularioGenerico/FormularioGenerico'
 import IFormField from '../../interfaces/IFormField'
+import { useTareasContext } from '../../context/Tarea/useTareasContext'
 
-interface IFormularioProps {
-  onSubmit: (tarea: ITarea) => void
-}
-
-const Formulario: FC<IFormularioProps> = ({ onSubmit }) => {
+const Formulario = () => {
+  const { agregarTarea } = useTareasContext()
   const initialData: Omit<ITarea, 'id'> = {
     nombre: '',
     descripcion: '',
@@ -20,27 +17,42 @@ const Formulario: FC<IFormularioProps> = ({ onSubmit }) => {
       name: 'nombre' as const,
       label: 'Nombre de la tarea',
       type: 'text' as const,
-      validation: (value: string) => (!value.trim() ? 'El nombre es requerido' : undefined),
+      validation: (value) => {
+        if (typeof value === 'string') {
+          return !value.trim() ? 'El nombre es requerido' : undefined
+        }
+      },
     },
     {
       name: 'descripcion' as const,
       label: 'Descripción',
       type: 'textarea' as const,
-      validation: (value: string) => (!value.trim() ? 'La descripción es requerida' : undefined),
+      validation: (value) => {
+        if (typeof value === 'string') {
+          return !value.trim() ? 'La descripción es requerida' : undefined
+        }
+      },
     },
     {
       name: 'estado' as const,
       label: 'Estado de la tarea',
       type: 'select' as const,
       options: ['Planificado', 'Ejecución', 'Finalizado'],
-      validation: (value: string) => (!value.trim() ? 'El estado es requerido' : undefined),
+      validation: (value) => {
+        if (typeof value === 'string') {
+          return !value.trim() ? 'El estado es requerido' : undefined
+        }
+      },
     },
     {
       name: 'fecha' as const,
       label: 'Fecha de la tarea',
       type: 'date' as const,
-      validation: (value: string) =>
-        !value.toString().trim() ? 'La fecha es requerida' : undefined,
+      validation: (value) => {
+        if (typeof value === 'string') {
+          return !value.toString().trim() ? 'La fecha es requerida' : undefined
+        }
+      },
     },
   ]
 
@@ -51,7 +63,7 @@ const Formulario: FC<IFormularioProps> = ({ onSubmit }) => {
       fecha: new Date(`${data.fecha} 00:00:00`),
     }
 
-    onSubmit(nuevaTarea)
+    agregarTarea(nuevaTarea)
   }
 
   return (

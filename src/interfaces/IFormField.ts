@@ -5,7 +5,7 @@ interface IFormField<T> {
   label: string
   type: FieldType
   options?: string[]
-  validation?: (value: any) => string | undefined
+  validation?: (value: T[keyof T]) => string | undefined
 }
 
 export default IFormField

@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { TareaContext } from './TareaContext'
+import TareaContext from '../Tarea/TareaContext'
 
 export const useTareasContext = () => {
   const context = useContext(TareaContext)

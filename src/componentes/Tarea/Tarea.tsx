@@ -1,14 +1,14 @@
 import { FC } from 'react'
 import ITarea from '../../interfaces/ITarea'
+import { useTareasContext } from '../../context/Tarea/useTareasContext'
 
 interface ITareaProps {
   tarea: ITarea
   index: number
-  onFinalizar: (id: string) => void
-  onEliminar: (id: string) => void
 }
 
-const Tarea: FC<ITareaProps> = ({ tarea, index, onFinalizar, onEliminar }) => {
+const Tarea: FC<ITareaProps> = ({ tarea, index }) => {
+  const { onEliminar, onFinalizar } = useTareasContext()
   return (
     <li key={index.toString()}>
       <div className='task-header'>
