@@ -1,0 +1,21 @@
+:root {
+  --blue-light: #339cff;
+  --blue-dark: #0b3b60;
+  --white: #ffffff;
+  --gray: #6b6e71;
+  --gray-light: #e7ebef;
+  --font-primary: 'Public Sans', sans-serif;
+  --font-secondary: 'Archivo', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
