@@ -1,21 +1,25 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, useReducer } from 'react'
 import ITarea from '../../interfaces/ITarea'
 import TareaContext from '../Tarea/TareaContext'
 import { fetchDataAPI } from '../../services/ApiService'
 import { toast } from 'react-toastify'
+import { tareasReducer } from '../../redusers/TareasReducer'
 
 type Props = { children: ReactNode }
 
 const TareasProvider = ({ children }: Props) => {
   const ApiURL = 'http://localhost:3000/tareas'
-  const [tareas, setTareas] = useState<ITarea[]>([])
+  const [state, dispatch] = useReducer(tareasReducer, { tareas: [] })
 
+  const cargarTareas = (tareas: ITarea[]) => {
+    dispatch({ type: 'CARGAR_TAREAS', payload: tareas })
+  }
   const agregarTarea = async (tarea: ITarea) => {
     const res = await fetchDataAPI<ITarea>(ApiURL, 'POST', tarea)
     if (res.error) {
       toast(res.error)
     } else {
-      setTareas(() => [...tareas, tarea])
+      dispatch({ type: 'AGREGAR_TAREA', payload: tarea })
     }
   }
 
@@ -26,9 +30,7 @@ const TareasProvider = ({ children }: Props) => {
     if (res.error) {
       toast(res.error)
     } else {
-      setTareas((prev) =>
-        prev!.map((tarea) => (tarea.id === id ? { ...tarea, estado: 'Finalizado' } : tarea))
-      )
+      dispatch({ type: 'FINALIZAR_TAREA', payload: id })
     }
   }
 
@@ -39,15 +41,15 @@ const TareasProvider = ({ children }: Props) => {
     if (res.error) {
       toast(res.error)
     } else {
-      setTareas((prev) => prev!.filter((tarea) => tarea.id !== id))
+      dispatch({ type: 'ELIMINAR_TAREA', payload: id })
     }
   }
 
   return (
     <TareaContext.Provider
       value={{
-        tareas,
-        setTareas,
+        tareas: state.tareas,
+        cargarTareas,
         onEliminar,
         onFinalizar,
         ApiURL,

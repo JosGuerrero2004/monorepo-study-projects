@@ -4,7 +4,7 @@ import { ITareaContext } from '../../interfaces/ITareaContext'
 const TareaContext = createContext<ITareaContext>({
   ApiURL: '',
   tareas: [],
-  setTareas: () => {},
+  cargarTareas: () => {},
   agregarTarea: async () => {},
   onFinalizar: async () => {},
   onEliminar: async () => {},

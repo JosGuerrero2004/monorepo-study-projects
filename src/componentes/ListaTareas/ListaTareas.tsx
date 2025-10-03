@@ -11,7 +11,7 @@ import { useFiltrosContext } from '../../context/Filtros/useFiltrosContext'
 
 const ListaTareas = () => {
   const creacionComponente = useRef<boolean>(true)
-  const { ApiURL, tareas, setTareas } = useTareasContext()
+  const { ApiURL, tareas, cargarTareas } = useTareasContext()
   const { filtro, finalizadas } = useFiltrosContext()
 
   const cargarTareasAPI = useCallback(async () => {
@@ -20,16 +20,9 @@ const ListaTareas = () => {
     if (res.error) {
       toast(res.error)
     } else {
-      setTareas(() => {
-        return res.data!.map((tarea: ITarea) => {
-          return {
-            ...tarea,
-            fecha: new Date(tarea.fecha),
-          }
-        })
-      })
+      cargarTareas(res.data ? res.data : [])
     }
-  }, [ApiURL, setTareas])
+  }, [ApiURL, cargarTareas])
 
   useEffect(() => {
     if (creacionComponente.current) {

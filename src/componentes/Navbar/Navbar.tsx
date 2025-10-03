@@ -11,7 +11,7 @@ const Navbar: FC<IProps> = ({ titulo }) => {
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
-  const { setFinalizadas, setFiltro } = useFiltrosContext()
+  const { filtrarTareas, mostrarFinalizadas } = useFiltrosContext()
   function toggleSearch(): void {
     if (searchWrapperRef.current && closeButtonRef.current && searchButtonRef.current) {
       searchWrapperRef.current.classList.add('active')
@@ -54,7 +54,7 @@ const Navbar: FC<IProps> = ({ titulo }) => {
               type='text'
               className='search-input'
               placeholder='Digite para filtrar'
-              onChange={(e) => setFiltro(e.target.value)}
+              onChange={(e) => filtrarTareas(e.target.value)}
             />
             <button ref={closeButtonRef} className='close-search' onClick={closeSearch}>
               ✕
@@ -63,7 +63,7 @@ const Navbar: FC<IProps> = ({ titulo }) => {
           <div>
             <label>
               Mostrar sólo finalizadas:
-              <input type='checkbox' onClick={() => setFinalizadas((prev) => !prev)} />
+              <input type='checkbox' onClick={() => mostrarFinalizadas()} />
             </label>
           </div>
         </div>
