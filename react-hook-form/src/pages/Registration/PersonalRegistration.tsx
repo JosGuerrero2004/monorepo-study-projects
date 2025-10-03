@@ -14,6 +14,16 @@ const PersonalRegistration = () => {
   const onSubmitted = (data: FomrInputProps) => {
     console.log(data)
   }
+
+  function validarEmail(value: string) {
+    const formatEmail = /^[^\s@]+@alura\.com$/
+    if (!formatEmail.test(value)) {
+      console.error('Dirección de email inválido para el dominio alura.com')
+      return
+    }
+
+    return true
+  }
   return (
     <>
       <Title>Ingresa algunos datos básicos:</Title>
@@ -24,7 +34,7 @@ const PersonalRegistration = () => {
             id='field-name'
             placeholder='Escribe tu nombre completo'
             type='text'
-            {...register('name')}
+            {...register('name', { required: true, minLength: 5 })}
           />
         </Fieldset>
         <Fieldset>
@@ -33,7 +43,7 @@ const PersonalRegistration = () => {
             id='field-email'
             placeholder='Ingresa tu dirección de correo electrónico'
             type='email'
-            {...register('email')}
+            {...register('email', { required: true, validate: validarEmail })}
           />
         </Fieldset>
 
