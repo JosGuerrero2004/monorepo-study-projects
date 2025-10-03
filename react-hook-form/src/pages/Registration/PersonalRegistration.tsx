@@ -1,85 +1,71 @@
-import { useState } from 'react'
 import { Button, Label, Fieldset, Input, Form, Title } from '../../components'
+import { useForm } from 'react-hook-form'
+interface FomrInputProps {
+  name: string
+  phone: string
+  email: string
+  password: string
+  confirmedPassword: string
+}
 
 const PersonalRegistration = () => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmedPassword, setConfirmedPassword] = useState('')
+  const { register, handleSubmit } = useForm<FomrInputProps>()
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log({ name, email, phone, password, confirmedPassword })
+  const onSubmitted = (data: FomrInputProps) => {
+    console.log(data)
   }
-
   return (
     <>
       <Title>Ingresa algunos datos básicos:</Title>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmitted)}>
         <Fieldset>
-          <Label htmlFor="field-name">Nombre</Label>
+          <Label htmlFor='field-name'>Nombre</Label>
           <Input
-            id="field-name"
-            placeholder="Escribe tu nombre completo"
-            type="text"
-            value={name}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setName(e.target.value)
-            }
+            id='field-name'
+            placeholder='Escribe tu nombre completo'
+            type='text'
+            {...register('name')}
           />
         </Fieldset>
         <Fieldset>
-          <Label htmlFor="field-email">Correo electrónico</Label>
+          <Label htmlFor='field-email'>Correo electrónico</Label>
           <Input
-            id="field-email"
-            placeholder="Ingresa tu dirección de correo electrónico"
-            type="email"
-            value={email}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
-            }
+            id='field-email'
+            placeholder='Ingresa tu dirección de correo electrónico'
+            type='email'
+            {...register('email')}
           />
         </Fieldset>
 
         <Fieldset>
           <Label>Teléfono</Label>
           <Input
-            id="field-phone"
-            type="text"
-            placeholder="Ej: (DDD)XX XXXX-XXXX"
-            value={phone}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPhone(e.target.value)
-            }
+            id='field-phone'
+            type='text'
+            placeholder='Ej: (DDD)XX XXXX-XXXX'
+            {...register('phone')}
           />
         </Fieldset>
 
         <Fieldset>
-          <Label htmlFor="field-password">Crea una contraseña</Label>
+          <Label htmlFor='field-password'>Crea una contraseña</Label>
           <Input
-            id="field-password"
-            placeholder="Crea una contraseña"
-            type="password"
-            value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
+            id='field-password'
+            placeholder='Crea una contraseña'
+            type='password'
+            {...register('password')}
           />
         </Fieldset>
         <Fieldset>
-          <Label htmlFor="field-confirm-password">Repite la contraseña</Label>
+          <Label htmlFor='field-confirm-password'>Repite la contraseña</Label>
           <Input
-            id="field-confirm-password"
-            placeholder="Repite la contraseña anterior"
-            type="password"
-            value={confirmedPassword}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setConfirmedPassword(e.target.value)
-            }
+            id='field-confirm-password'
+            placeholder='Repite la contraseña anterior'
+            type='password'
+            {...register('confirmedPassword')}
           />
         </Fieldset>
-        <Button type="submit">Avanzar</Button>
+        <Button type='submit'>Avanzar</Button>
       </Form>
     </>
   )
