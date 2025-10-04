@@ -1,6 +1,6 @@
-import { Button, Label, Fieldset, Input, Form, Title } from '../../components'
+import { Button, Label, Fieldset, Input, Form, Title, ErrorMessage } from '../../components'
 import { useForm } from 'react-hook-form'
-interface FomrInputProps {
+interface FormInputErrors {
   name: string
   phone: string
   email: string
@@ -9,9 +9,22 @@ interface FomrInputProps {
 }
 
 const PersonalRegistration = () => {
-  const { register, handleSubmit } = useForm<FomrInputProps>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<FormInputErrors>()
+  const password = watch('password')
 
-  const onSubmitted = (data: FomrInputProps) => {
+  const validatePassword = {
+    required: (val: string) => !!val || 'Por favor ingrese la contraseña nuevamente',
+    minLength: (val: string) =>
+      val.length >= 6 || 'La contraseña debe tener por lo menos y 6 caracteres',
+    matchPassword: (val: string) => val === password || 'Las contraseñas no coinciden',
+  }
+
+  const onSubmitted = (data: FormInputErrors) => {
     console.log(data)
   }
 
@@ -19,7 +32,7 @@ const PersonalRegistration = () => {
     const formatEmail = /^[^\s@]+@alura\.com$/
     if (!formatEmail.test(value)) {
       console.error('Dirección de email inválido para el dominio alura.com')
-      return
+      return 'Dirección de email inválido para el dominio alura.com'
     }
 
     return true
@@ -34,8 +47,16 @@ const PersonalRegistration = () => {
             id='field-name'
             placeholder='Escribe tu nombre completo'
             type='text'
-            {...register('name', { required: true, minLength: 5 })}
+            $error={!!errors.name}
+            {...register('name', {
+              required: 'El campo Nombre es obligatorio',
+              minLength: {
+                value: 5,
+                message: 'El nombre debe tener al menos 5 caracteres',
+              },
+            })}
           />
+          {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </Fieldset>
         <Fieldset>
           <Label htmlFor='field-email'>Correo electrónico</Label>
@@ -43,8 +64,13 @@ const PersonalRegistration = () => {
             id='field-email'
             placeholder='Ingresa tu dirección de correo electrónico'
             type='email'
-            {...register('email', { required: true, validate: validarEmail })}
+            $error={!!errors.email}
+            {...register('email', {
+              required: 'El campo Correo es obligatorio',
+              validate: validarEmail,
+            })}
           />
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </Fieldset>
 
         <Fieldset>
@@ -53,8 +79,11 @@ const PersonalRegistration = () => {
             id='field-phone'
             type='text'
             placeholder='Ej: (DDD)XX XXXX-XXXX'
-            {...register('phone')}
+            {...register('phone', {
+              required: 'El teléfono es obligatorio',
+            })}
           />
+          {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
         </Fieldset>
 
         <Fieldset>
@@ -63,8 +92,16 @@ const PersonalRegistration = () => {
             id='field-password'
             placeholder='Crea una contraseña'
             type='password'
-            {...register('password')}
+            $error={!!errors.password}
+            {...register('password', {
+              required: 'La contraseña es obligatoria',
+              minLength: {
+                value: 6,
+                message: 'La contraseña debe de ser de al menos 6 caracter',
+              },
+            })}
           />
+          {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
         </Fieldset>
         <Fieldset>
           <Label htmlFor='field-confirm-password'>Repite la contraseña</Label>
@@ -72,8 +109,15 @@ const PersonalRegistration = () => {
             id='field-confirm-password'
             placeholder='Repite la contraseña anterior'
             type='password'
-            {...register('confirmedPassword')}
+            $error={!!errors.confirmedPassword}
+            {...register('confirmedPassword', {
+              required: 'Debe repetir la contraseña',
+              validate: validatePassword,
+            })}
           />
+          {errors.confirmedPassword && (
+            <ErrorMessage>{errors.confirmedPassword.message}</ErrorMessage>
+          )}
         </Fieldset>
         <Button type='submit'>Avanzar</Button>
       </Form>
