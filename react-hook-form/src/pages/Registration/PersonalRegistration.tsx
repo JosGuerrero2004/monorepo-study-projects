@@ -1,5 +1,7 @@
 import { Button, Label, Fieldset, Input, Form, Title, ErrorMessage } from '../../components'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
+import InputMask from '../../components/InputMask'
+import { useEffect } from 'react'
 interface FormInputErrors {
   name: string
   phone: string
@@ -12,9 +14,20 @@ const PersonalRegistration = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     watch,
-  } = useForm<FormInputErrors>()
+    control,
+    reset,
+  } = useForm<FormInputErrors>({
+    mode: 'all',
+    defaultValues: {
+      confirmedPassword: '',
+      password: '',
+      phone: '',
+      email: '',
+      name: '',
+    },
+  })
   const password = watch('password')
 
   const validatePassword = {
@@ -37,6 +50,13 @@ const PersonalRegistration = () => {
 
     return true
   }
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset()
+    }
+  }, [isSubmitSuccessful, reset])
+
   return (
     <>
       <Title>Ingresa algunos datos básicos:</Title>
@@ -73,18 +93,28 @@ const PersonalRegistration = () => {
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </Fieldset>
 
-        <Fieldset>
-          <Label>Teléfono</Label>
-          <Input
-            id='field-phone'
-            type='text'
-            placeholder='Ej: (DDD)XX XXXX-XXXX'
-            {...register('phone', {
-              required: 'El teléfono es obligatorio',
-            })}
-          />
-          {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
-        </Fieldset>
+        <Controller
+          control={control}
+          name='phone'
+          rules={{
+            required: 'El teléfono es obligatorio',
+          }}
+          render={({ field }) => (
+            <Fieldset>
+              <Label>Teléfono</Label>
+              <InputMask
+                mask='+503 9999-9999'
+                id='field-phone'
+                type='text'
+                placeholder='Ej: (DDD)XX XXXX-XXXX'
+                $error={!!errors.password}
+                {...register('phone')}
+                onChange={field.onChange}
+              />
+              {errors.phone && <ErrorMessage>{errors.phone.message}</ErrorMessage>}
+            </Fieldset>
+          )}
+        />
 
         <Fieldset>
           <Label htmlFor='field-password'>Crea una contraseña</Label>
