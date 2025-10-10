@@ -1,11 +1,17 @@
 import { StarIcon } from '@heroicons/react/20/solid'
 import type { IProduct } from '../interface/IProduct'
+import { useAppDispatch } from '../hooks/hooks'
+import { addToCart } from '../features/cart/cartSlice'
 
 type Props = {
   product: IProduct
 }
 
 const ProductCard = ({ product }: Props) => {
+  const dispatch = useAppDispatch()
+  const handleAddCart = () => {
+    dispatch(addToCart(product))
+  }
   return (
     <div className='bg-white p-4 rounded shadow-md hover:shadow-lg transition-shadow'>
       <div className='relative aspect-square mb-4'>
@@ -29,6 +35,12 @@ const ProductCard = ({ product }: Props) => {
         <span className='text-xs'>$</span>
         <span className='text-lg font-bold'>{product.price}</span>
       </div>
+      <button
+        onClick={handleAddCart}
+        className='w-full bg-[#FFD814] hover:bg-[#F7CA00] text-black text-sm font-medium py-1 px-4 rounded-full border border-[#FCD200] shadow-sm transition-colors'
+      >
+        Agregar al carrito
+      </button>
     </div>
   )
 }

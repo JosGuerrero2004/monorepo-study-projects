@@ -1,12 +1,17 @@
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
+import Cart from './pages/Cart'
 
 function App() {
   return (
     <div className='min-h-screen bg-gray-100'>
       <Navbar />
-      <Home />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/cart' element={<Cart />} />
+      </Routes>
     </div>
   )
 }

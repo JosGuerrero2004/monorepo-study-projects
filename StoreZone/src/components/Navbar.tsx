@@ -1,11 +1,18 @@
 import { MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/solid'
 import storezonelogo from '../assets/storezonelogo.png'
+import { Link } from 'react-router-dom'
+import { useAppSelector } from '../hooks/hooks'
+import { selectCartItemsCount } from '../features/cart/cartSlice'
 function Navbar() {
+  const totalItems = useAppSelector(selectCartItemsCount)
   return (
     <nav className='bg-[#131921] text-white p-2'>
       <div className='max-w-7xl mx-auto flex items-center gap-4'>
         <div className='flex-shrink-0'>
-          <img src={storezonelogo} alt='AluraZon Logo' className='h-8 object-contain' />
+          <Link to='/'>
+            {' '}
+            <img src={storezonelogo} alt='AluraZon Logo' className='h-8 object-contain' />
+          </Link>
         </div>
 
         <div className='flex-1 flex'>
@@ -30,10 +37,14 @@ function Navbar() {
             <div className='text-xs'>Devoluciones</div>
             <div className='text-sm font-bold'>& Pedidos</div>
           </div>
-          <div className='flex items-center'>
-            <ShoppingCartIcon className='h-8 w-8' />
-            <span className='font-bold'>Carrito</span>
-          </div>
+          <Link to='/cart'>
+            <div className='relative'>
+              <ShoppingCartIcon className='h-8 w-8' />
+              <span className='absolute -top-1 -right-1 bg-[#f08804] text-xs font-bold px-1.5 rounded-full'>
+                {totalItems}
+              </span>
+            </div>
+          </Link>
         </div>
       </div>
     </nav>
