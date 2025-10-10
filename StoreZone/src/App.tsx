@@ -3,6 +3,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Cart from './pages/Cart'
+import ProductDetail from './pages/ProductDetail'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/product/:productId' element={<ProductDetail />} />
       </Routes>
     </div>
   )
