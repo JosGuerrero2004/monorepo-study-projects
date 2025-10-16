@@ -1,0 +1,46 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`La página de configuración > Debe ser renderizada correctamente 1`] = `
+<div>
+  <div
+    class="card"
+  >
+    <section>
+      <h2>
+        Vamos a Comenzar!
+      </h2>
+      <form>
+        <div
+          class="grupo-input-btn"
+        >
+          <input
+            placeholder="Ingrese los nombres de los participantes"
+            type="text"
+            value=""
+          />
+          <button
+            disabled=""
+          >
+            Agregar
+          </button>
+        </div>
+      </form>
+      <ul />
+      <footer
+        class="footer-configuraciones"
+      >
+        <button
+          class="boton"
+          disabled=""
+        >
+          Iniciar Juego
+        </button>
+        <img
+          alt="Bolsa de compras"
+          src="/imagenes/bolsas.png"
+        />
+      </footer>
+    </section>
+  </div>
+</div>
+`;
